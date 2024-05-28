@@ -31,6 +31,19 @@ def menu():
     print("1. List Proveyers")
     print("2. List Items")
     print("3. List Catagories")
+    print("4. List Items by proveyer")
+    print("5. List full order guide")
+    print("6. List order guide based on items near par")
+    print("7. List guide of items from highest to lowest in stock")
+    print("8. Search for item by name")
+    print("9. Search for department by id")
+    print("10. Manage Proveyers")
+    print("11. Manage Items")
+    print("12. Manage Pars")
+    print("13. Manage Catagories")
+    print("14. Manage Departments")
+
+
 
 if __name__ == "__main__":
     main()
