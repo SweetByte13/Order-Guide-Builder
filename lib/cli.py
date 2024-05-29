@@ -5,13 +5,29 @@ from helpers import (
     exit_program,
     list_proveyers,
     list_items,
-    list_catagories
+    list_catagories,
+    list_items_by_proveyer,
+    create_new_proveyer,
+    update_new_proveyer,
+    delete_new_proveyer,
+    create_new_item,
+    update_new_item,
+    delete_new_item,
+    create_new_par,
+    update_new_par,
+    delete_new_par,
+    create_new_catagory,
+    update_new_catagory,
+    delete_new_catagory,
+    create_new_department,
+    update_new_department,
+    delete_new_department
 )
 
 
 def main():
     while True:
-        menu()
+        print_menu()
         choice = input("> ")
         if choice == "0":
             exit_program()
@@ -21,11 +37,89 @@ def main():
             list_items()
         elif choice == "3":
             list_catagories()
+        elif choice == "4":
+            list_items_by_proveyer()
+        elif choice == "10":
+            manage_proveyer_menu()
+        elif choice == "11":
+            manage_item_menu()
+        elif choice == "12":
+            manage_par_menu()
+        elif choice == "13":
+            manage_catagory_menu()
+        elif choice == "14":
+            manage_department_menu()         
         else:
             print("Invalid choice")
 
+def manage_proveyer_menu():
+    while True:
+        print_manage_proveyer_menu()
+        choice = input("> ")
+        if choice == "0":
+            return
+        elif choice == "1":
+            create_new_proveyer() 
+        elif choice == "2":
+            update_new_proveyer()
+        elif choice == "3":
+            delete_new_proveyer()
+            
+def manage_item_menu():
+    while True:
+        print_manage_item_menu()
+        choice = input("> ")
+        if choice == "0":
+            return
+        elif choice == "1":
+            create_new_item() 
+        elif choice == "2":
+            update_new_item()
+        elif choice == "3":
+            delete_new_item()
 
-def menu():
+def manage_par_menu():
+    while True:
+        print_manage_par_menu()
+        choice = input("> ")
+        if choice == "0":
+            return
+        elif choice == "1":
+            create_new_par() 
+        elif choice == "2":
+            update_new_par()
+        elif choice == "3":
+            delete_new_par()
+            
+def manage_catagory_menu():
+    while True:
+        print_manage_catagory_menu()
+        choice = input("> ")
+        if choice == "0":
+            return
+        elif choice == "1":
+            create_new_catagory() 
+        elif choice == "2":
+            update_new_catagory()
+        elif choice == "3":
+            delete_new_catagory()
+        
+def manage_department_menu():
+    while True:
+        print_manage_department_menu()
+        choice = input("> ")
+        if choice == "0":
+            return
+        elif choice == "1":
+            create_new_department() 
+        elif choice == "2":
+            update_new_department()
+        elif choice == "3":
+            delete_new_department()
+                
+
+def print_menu():
+    print("-------------------------------")
     print("Please select an option:")
     print("0. Exit the program")
     print("1. List Proveyers")
@@ -33,8 +127,8 @@ def menu():
     print("3. List Catagories")
     print("4. List Items by proveyer")
     print("5. List full order guide")
-    print("6. List order guide based on items near par")
-    print("7. List guide of items from highest to lowest in stock")
+    print("6. List order guide based on items near or below par")
+    print("7. List guide of items current amounts stocked")
     print("8. Search for item by name")
     print("9. Search for department by id")
     print("10. Manage Proveyers")
@@ -42,8 +136,52 @@ def menu():
     print("12. Manage Pars")
     print("13. Manage Catagories")
     print("14. Manage Departments")
+    print("-------------------------------")
 
+def print_manage_proveyer_menu():
+    print("-------------------------------")
+    print("Please select an option:")
+    print("0. Return to previous menu")
+    print("1. Create proveyer")
+    print("2. Edit proveyer")
+    print("3. Delete proveyer")
+    print("-------------------------------")
 
+def print_manage_item_menu():
+    print("-------------------------------")
+    print("Please select an option:")
+    print("0. Return to previous menu")
+    print("1. Create item")
+    print("2. Edit item")
+    print("3. Delete item")
+    print("-------------------------------")
+    
+def print_manage_par_menu():
+    print("-------------------------------")
+    print("Please select an option:")
+    print("0. Return to previous menu")
+    print("1. Create par")
+    print("2. Edit par")
+    print("3. Delete par")
+    print("-------------------------------")
+
+def print_manage_catagory_menu():
+    print("-------------------------------")
+    print("Please select an option:")
+    print("0. Return to previous menu")
+    print("1. Create catagory")
+    print("2. Edit catagory")
+    print("3. Delete catagory")
+    print("-------------------------------")
+    
+def print_manage_department_menu():
+    print("-------------------------------")
+    print("Please select an option:")
+    print("0. Return to previous menu")
+    print("1. Create department")
+    print("2. Edit department")
+    print("3. Delete department")
+    print("-------------------------------")
 
 if __name__ == "__main__":
     main()

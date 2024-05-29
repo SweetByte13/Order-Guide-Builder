@@ -4,14 +4,16 @@ class Item:
 
     all = {}
     
-    def __init__(self, name, proveyer_id, par_id, catagory_id):
+    def __init__(self, name, par_id, catagory_id):
         self.name = name
-        self.proveyer_id = proveyer_id
         self.par_id = par_id
         self.catagory_id = catagory_id
+        self.proveyer_items = []
+        self.catagory = None
+        self.par = None
         
     def __repr__(self):
-        return f"<Item {self.id}: {self.name}, {self.proveyer_id}, {self.par_id}, {self.catagory_id}>"
+        return f"<Item {self.id}: {self.name}, {self.par_id}, {self.catagory_id}>"
     
     @property
     def name(self):
@@ -23,17 +25,6 @@ class Item:
             self._name = new_name
         else:
             raise TypeError(f'{new_name} is not a string, Item must have a name')
-        
-    @property
-    def proveyer_id(self):
-        return self._proveyer_id
-    
-    @proveyer_id.setter
-    def proveyer_id(self, new_proveyer_id):
-        if isinstance (new_proveyer_id, int):
-            self._proveyer_id = new_proveyer_id
-        else:
-            raise TypeError(f'{new_proveyer_id} is not a integer, Items must have a proveyer ID')
         
     @property
     def par_id(self):
@@ -63,10 +54,8 @@ class Item:
             CREATE TABLE IF NOT EXISTS items (
             id INTEGER PRIMARY KEY,
             name TEXT,
-            proveyer_id INTEGER,
             par_id INTEGER,
             catagory_id INTEGER,
-            FOREIGN KEY (proveyer_id) REFERENCES proveyer(id),
             FOREIGN KEY (par_id) REFERENCES par(id),
             FOREIGN KEY (catagory_id) REFERENCES catagory(id)
             )
@@ -75,8 +64,8 @@ class Item:
         CONN.commit()
         
     @classmethod
-    def create(cls, name, proveyer_id, par_id, catagory_id):
-        item = cls(str(name), int(proveyer_id), int(par_id), int(catagory_id))
+    def create(cls, name, par_id, catagory_id):
+        item = cls(name, par_id, catagory_id)
         item.save()
         return item
     
@@ -92,10 +81,10 @@ class Item:
     def instance_from_db(cls, row):
         item = cls.all.get(row[0])
         if item:
-            item.proveyer_id = row[2]
-
+            item.par_id = int(row[2])
+            item.catagory_id = int(row [3])
         else:
-            item = cls(str(row[1]),  int(row[2]), int(row[3]), int(row[4]))
+            item = cls(str(row[1]), int(row[2]), int(row[3]))
             item.id = row[0]
             cls.all[item.id] = item
         return item
@@ -131,10 +120,10 @@ class Item:
     
     def save(self):
         sql = """
-            INSERT INTO items(name, proveyer_id, par_id, catagory_id)
-            VALUES (?,?,?,?)
+            INSERT INTO items(name, par_id, catagory_id)
+            VALUES (?,?,?)
         """    
-        CURSOR.execute(sql, (self.name, self.proveyer_id, self.par_id, self.catagory_id))
+        CURSOR.execute(sql, (self.name, self.par_id, self.catagory_id))
         CONN.commit()
         
         self.id = CURSOR.lastrowid
@@ -143,10 +132,10 @@ class Item:
     def update(self):
         sql = """
             UPDATE items
-            SET name=?, proveyer_id=?, par_id=?, catagory_id=?
+            SET name=?, par_id=?, catagory_id=?
             WHERE id=?
             """
-        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql, (self.name, self.par_id, self.catagory_id, self.id))
         CONN.commit()
         
     def delete(self):

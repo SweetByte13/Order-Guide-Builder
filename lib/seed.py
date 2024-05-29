@@ -1,5 +1,4 @@
 #!/usr/bin/env python3
-
 from models.__init__ import CONN, CURSOR
 from models.proveyer import Proveyer
 from models.proveyer_item import Proveyer_Item
@@ -38,12 +37,12 @@ def seed_database():
     Proveyer.create("Congressional", "Fish", 2100, 150)
     Proveyer.create("Sysco", "Dry Goods", 1600, 100)
     
-    Proveyer_Item.create("Tomatoes", 1, 10, 4)
-    Proveyer_Item.create("Apples", 1, 23, 50)
-    Proveyer_Item.create("Butter", 2,34, 24)
-    Proveyer_Item.create("Lard", 3, 25, 1)
-    Proveyer_Item.create("Honey", 5, 18, 1)
-    Proveyer_Item.create("Salmon", 4, 32, 2)
+    Proveyer_Item.create("Tomatoes",4, 1, 10, 4)
+    Proveyer_Item.create("Apples",3,  1, 23, 50)
+    Proveyer_Item.create("Butter",5,  2,34, 24)
+    Proveyer_Item.create("Lard",2, 3, 25, 1)
+    Proveyer_Item.create("Honey",1, 5, 18, 1)
+    Proveyer_Item.create("Salmon",6, 4, 32, 2)
     
     Par.create("Tomatoes", 12, 8)
     Par.create("Apples", 45, 8)
@@ -59,31 +58,23 @@ def seed_database():
     Par_Department.create(1, 2)
     Par_Department.create(6, 1)
 
-    Department.create("Kitchen", 1)
-    Department.create("Bar", 4)
-    Department.create("Pastry", 5)
-    Department.create("Kitchen", 2)
+    Department.create("Kitchen")
+    Department.create("Bar")
+    Department.create("Pastry")
+    Department.create("Kitchen")
     
-    # catagory:
-    # dairy, produce, meat, fish, dry goods
+    Item.create("Honey", 5, 4)
+    Item.create("Lard", 4, 3)
+    Item.create("Apples", 2, 1)
+    Item.create("Tomatoes", 1, 1)
+    Item.create("Butter", 3, 2)
+    Item.create("Salmon", 6, 5)
     
-    # departments:
-    # kitchen, pastry, bar
-    
-    Item.create("Honey", 5, 5, 4)
-    Item.create("Lard", 3, 4, 3)
-    Item.create("Apples", 1, 2, 1)
-    Item.create("Tomatoes", 1, 1, 1)
-    Item.create("Butter", 2, 3, 2)
-    Item.create("Salmon", 4, 6, 5)
-    
-    Catagory.create("Produce", 3)
-    Catagory.create("Dairy", 5)
-    Catagory.create("Meat", 2)
-    Catagory.create("Dry Goods", 1)
-    Catagory.create("Fish", 6)
-    
-    
+    Catagory.create("Produce")
+    Catagory.create("Dairy")
+    Catagory.create("Meat")
+    Catagory.create("Dry Goods")
+    Catagory.create("Fish")
     
     
 seed_database()

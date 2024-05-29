@@ -6,6 +6,8 @@ class Par_Department:
     def __init__(self, par_id, department_id):
         self.par_id = par_id
         self.department_id = department_id
+        self.par = None
+        self.department = None
         
     def __repr__(self):
         return f"<Par {self.id}:{self.par_id}, {self.department_id}>"

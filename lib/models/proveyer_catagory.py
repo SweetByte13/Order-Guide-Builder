@@ -6,6 +6,8 @@ class Proveyer_Catagory:
     def __init__(self,proveyer_id, catagory_id):
         self.proveyer_id = proveyer_id
         self.catagory_id = catagory_id
+        self.proveyer = None
+        self.catagory = None
         
     def __repr__(self):
         return f"<Par {self.id}:{self.proveyer_id}, {self.catagory_id}>"

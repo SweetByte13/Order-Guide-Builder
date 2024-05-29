@@ -8,6 +8,8 @@ class Proveyer:
         self.catagory = catagory
         self.cut_off_time = cut_off_time
         self.order_min = order_min
+        self.proveyer_catagories = []
+        self.proveyer_items = []
         
     def __repr__(self):
         return f"<Proveyer {self.id}: {self.name}, {self.catagory}, {self.cut_off_time}, {self.order_min}>"
@@ -72,7 +74,7 @@ class Proveyer:
         
     @classmethod
     def create(cls, name, catagory, cut_off_time, order_min):
-        proveyer = cls(str(name), catagory, cut_off_time, order_min)
+        proveyer = cls(str(name), str(catagory), int(cut_off_time), int(order_min))
         proveyer.save()
         return proveyer
     
@@ -91,7 +93,7 @@ class Proveyer:
             proveyer.cut_off_time = row[3]
             proveyer.order_min = row[4]
         else:
-            proveyer = cls(str(row[1]),  str(row[2]), row[3], row[4])
+            proveyer = cls(str(row[1]), str(row[2]), int(row[3]), int(row[4]))
             proveyer.id = row[0]
             cls.all[proveyer.id] = proveyer
         return proveyer
@@ -139,10 +141,10 @@ class Proveyer:
     def update(self):
         sql = """
             UPDATE proveyers
-            SET name=?, catagory=?, cut_off_time=?, order_min=?
+            SET cut_off_time=?, order_min=?
             WHERE id=?
             """
-        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql, (self.cut_off_time, self.order_min, self.id))
         CONN.commit()
         
     def delete(self):
@@ -156,5 +158,20 @@ class Proveyer:
         del type(self).all[self.id]
         self.id=None
         
-    # def catagories(self):
-    #     from model.proveyer_item import proveyer_item
+    def get_items(self):
+        # from models.proveyer_item import Proveyer_Item
+        sql = """
+            SELECT * FROM proveyer_item pi JOIN
+            items i ON pi.item_id = i.id
+            WHERE pi.proveyer_id=?
+        """
+        rows = CURSOR.execute(sql, (self.id,)).fetchall()
+        # [id , name, item_id, proveyer_id, price, case_size  # id, name, par_id, catagory_id]
+        items=[]
+        for row in rows:
+            items.append({(row[1], row[2], row[3], row[4], row[5], row[8], row[9])})
+        return (items)
+            
+            
+            
+            

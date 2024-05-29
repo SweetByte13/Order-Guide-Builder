@@ -4,12 +4,13 @@ from models.__init__ import CURSOR, CONN
 class Catagory:
     all = {}
     
-    def __init__(self, name, item_id):
+    def __init__(self, name):
         self.name = name
-        self.item_id = item_id
+        self.items = []
+        self.proveyer_catagories = []
         
     def __repr__(self):
-        return f"<Catagory {self.id}: {self.name}, {self.item_id}>"
+        return f"<Catagory {self.id}: {self.name}>"
     
     @property
     def name(self):
@@ -22,33 +23,21 @@ class Catagory:
         else:
             raise TypeError(f'{new_name} is not a string.')
 
-    @property
-    def item_id(self):
-        return self._item_id
-    
-    @item_id.setter
-    def item_id(self, new_item_id):
-        if isinstance (new_item_id, int):
-            self._item_id = new_item_id
-        else:
-            raise TypeError(f'{new_item_id} is not a integer, Catagory must have a item ID')
  
     @classmethod
     def create_table(cls):
         sql = """
             CREATE TABLE IF NOT EXISTS catagories (
             id INTEGER PRIMARY KEY,
-            name TEXT,
-            item_id INTEGER,
-            FOREIGN KEY (item_id) REFERENCES item(id)
+            name TEXT
             )
         """
         CURSOR.execute(sql)
         CONN.commit()
         
     @classmethod
-    def create(cls, name, par_id):
-        catagory = cls(str(name), int(par_id))
+    def create(cls, name):
+        catagory = cls(str(name))
         catagory.save()
         return catagory
     
@@ -64,11 +53,9 @@ class Catagory:
     def instance_from_db(cls, row):
         catagory = cls.all.get(row[0])
         if catagory:
-            catagory.name = row [1]
-            catagory.item_id = row[2]
-            
+            catagory.name = str(row[1])    
         else:
-            catagory = cls(str(row[1]),  int(row[2]))
+            catagory = cls(str(row[1]))
             catagory.id = row[0]
             cls.all[catagory.id] = catagory
         return catagory
@@ -104,10 +91,10 @@ class Catagory:
     
     def save(self):
         sql = """
-            INSERT INTO catagories(name, item_id)
-            VALUES (?,?)
+            INSERT INTO catagories(name)
+            VALUES (?)
         """    
-        CURSOR.execute(sql, (self.name, self.item_id))
+        CURSOR.execute(sql, (self.name,))
         CONN.commit()
         
         self.id = CURSOR.lastrowid
@@ -116,7 +103,7 @@ class Catagory:
     def update(self):
         sql = """
             UPDATE catagories
-            SET name=?, item_id=?
+            SET name=?
             WHERE id=?
             """
         CURSOR.execute(sql, (self.id,))

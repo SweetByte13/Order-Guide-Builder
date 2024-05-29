@@ -1,18 +1,21 @@
 from models.__init__ import CURSOR, CONN
 from models.proveyer import Proveyer
-
+from models.item import Item
 
 class Proveyer_Item:
     all = {}
     
-    def __init__(self, name, proveyer_id, price, case_size):
+    def __init__(self, name, item_id, proveyer_id, price, case_size):
         self.name = name
+        self.item_id = item_id
         self.proveyer_id = proveyer_id
         self.price = price
         self.case_size = case_size
+        self.item = None
+        self.proveyer = None
         
     def __repr__(self):
-        return f"<Proveyer item {self.id}: {self.name}, {self.proveyer_id}, {self.price}, {self.case_size}>"
+        return f"<Proveyer item {self.id}: {self.name}, {self.item_id}, {self.proveyer_id}, {self.price}, {self.case_size}>"
     
     @property
     def name(self):
@@ -24,7 +27,18 @@ class Proveyer_Item:
             self._name = name
         else:
             raise TypeError(f'{name} is not a string.')
-        
+    
+    @property
+    def item_id(self):
+        return self._item_id
+    
+    @item_id.setter
+    def item_id(self, new_item_id):
+        if  isinstance (new_item_id, int):
+            self._item_id = new_item_id
+        else:
+            raise TypeError(f'{new_item_id} is not a integer, Proveyer_Item must have a item ID')
+            
     @property
     def proveyer_id(self):
         return self._proveyer_id
@@ -62,11 +76,13 @@ class Proveyer_Item:
     def create_table(cls):
         sql = """
             CREATE TABLE IF NOT EXISTS proveyer_item (
-            id INTEGER,
+            id INTEGER PRIMARY KEY,
             name TEXT,
+            item_id INTEGER,
             proveyer_id INTEGER,
             price INTEGER,
             case_size INTEGER,
+            FOREIGN KEY (item_id) REFERENCES item(id),
             FOREIGN KEY (proveyer_id) REFERENCES proveyer(id))
         """
         CURSOR.execute(sql)
@@ -82,10 +98,10 @@ class Proveyer_Item:
 
     def save(self):
         sql = """
-                INSERT INTO proveyer_item (name, proveyer_id, price, case_size)
-                VALUES (?, ?, ?, ?)
+                INSERT INTO proveyer_item (name, item_id, proveyer_id, price, case_size)
+                VALUES (?, ?, ?, ?, ?)
         """
-        CURSOR.execute(sql, (self.name, self.proveyer_id, self.price, self.case_size))
+        CURSOR.execute(sql, (self.name, self.item_id, self.proveyer_id, self.price, self.case_size))
         CONN.commit()
 
         self.id = CURSOR.lastrowid
@@ -94,10 +110,10 @@ class Proveyer_Item:
     def update(self):
         sql = """
             UPDATE proveyer_item
-            SET name = ?, proveyer_id = ?, price = ?, case_size = ?
+            SET name = ?, item_id = ?, proveyer_id = ?, price = ?, case_size = ?
             WHERE id = ?
         """
-        CURSOR.execute(sql, (self.name, self.proveyer_id, self.price,
+        CURSOR.execute(sql, (self.name, self.item_id, self.proveyer_id, self.price,
                              self.case_size, self.id))
         CONN.commit()
 
@@ -113,8 +129,8 @@ class Proveyer_Item:
         self.id = None
 
     @classmethod
-    def create(cls, name, proveyer_id, price, case_size):
-        proveyer_item = cls(name, int(proveyer_id), price, case_size)
+    def create(cls, name, item_id, proveyer_id, price, case_size):
+        proveyer_item = cls(str(name), int(item_id), int(proveyer_id), int(price), int(case_size))
         proveyer_item.save()
         return proveyer_item
 
@@ -124,11 +140,12 @@ class Proveyer_Item:
         if proveyer_item:
             proveyer_item.id=row[0]
             proveyer_item.name=row[1]
-            proveyer_item.proveyer_id = row[2]
-            proveyer_item.price = row[3]
-            proveyer_item.case_size = row[4]
+            proveyer_item.item_id = row[2]
+            proveyer_item.proveyer_id = row[3]
+            proveyer_item.price = row[4]
+            proveyer_item.case_size = row[5]
         else:
-            proveyer_item = cls(row[1], row[2], row[3], row[4])
+            proveyer_item = cls(row[1], row[2], row[3], row[4], row[5])
             proveyer_item.id = row[0]
             cls.all[proveyer_item.id] = proveyer_item
         return proveyer_item
@@ -159,6 +176,15 @@ class Proveyer_Item:
             FROM proveyer_item
             WHERE proveyer_id is ?
         """
-
         row = CURSOR.execute(sql, (proveyer_id,)).fetchone()
+        return cls.instance_from_db(row) if row else None
+    
+    @classmethod
+    def find_by_item_id(cls, item_id):
+        sql = """
+            SELECT *
+            FROM proveyer_item
+            WHERE item_id is ?
+        """
+        row = CURSOR.execute(sql, (item_id,)).fetchone()
         return cls.instance_from_db(row) if row else None

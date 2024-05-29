@@ -8,6 +8,8 @@ class Par:
         self.name = name
         self.stock = stock
         self.par_amount = par_amount
+        self.items = []
+        self.department_pars = []
 
         
     def __repr__(self):
@@ -77,12 +79,12 @@ class Par:
     def instance_from_db(cls, row):
         par = cls.all.get(row[0])
         if par:
-            par.name=row[1]
-            par.par_amount=row[2]
-            par.stock=row[3]
+            par.name=str(row[1])
+            par.par_amount=int(row[2])
+            par.stock=int(row[3])
             
         else:
-            par = cls(str(row[1]), str(row[2]), row[3])
+            par = cls(str(row[1]), int(row[2]), int(row[3]))
             par.id = row[0]
             cls.all[par.id] = par
         return par
@@ -133,7 +135,7 @@ class Par:
             SET name=?, stock=?, par_amount=?
             WHERE id=?
             """
-        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql, (self.name, self.stock, self.par_amount, self.id))
         CONN.commit()
         
     def delete(self):

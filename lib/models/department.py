@@ -1,15 +1,14 @@
 from models.__init__ import CURSOR, CONN
 
-
 class Department:
     all = {}
     
-    def __init__(self, name, par_id):
+    def __init__(self, name):
         self.name = name
-        self.par_id = par_id
-        
+        self.department_pars = []
+    
     def __repr__(self):
-        return f"<Par {self.id}: {self.name}, {self.par_id}>"
+        return f"<Department {self.id}: {self.name}>"
     
     @property
     def name(self):
@@ -21,34 +20,21 @@ class Department:
             self._name = new_name
         else:
             raise TypeError(f'{new_name} is not a string.')
-
-    @property
-    def par_id(self):
-        return self._par_id
-    
-    @par_id.setter
-    def par_id(self, new_par_id):
-        if isinstance (new_par_id, int):
-            self._par_id = new_par_id
-        else:
-            raise TypeError(f'{new_par_id} is not a integer, Department must have a par ID')
  
     @classmethod
     def create_table(cls):
         sql = """
             CREATE TABLE IF NOT EXISTS departments (
             id INTEGER PRIMARY KEY,
-            name TEXT,
-            par_id INTEGER,
-            FOREIGN KEY (par_id) REFERENCES par(id)
+            name TEXT
             )
         """
         CURSOR.execute(sql)
         CONN.commit()
         
     @classmethod
-    def create(cls, name, par_id):
-        department = cls(str(name), int(par_id))
+    def create(cls, name):
+        department = cls(str(name))
         department.save()
         return department
     
@@ -64,11 +50,9 @@ class Department:
     def instance_from_db(cls, row):
         department = cls.all.get(row[0])
         if department:
-            department.name = row [1]
-            department.par_id = row[2]
-            
+            department.name = str(row[1])    
         else:
-            department = cls(str(row[1]),  str(row[2]))
+            department = cls(str(row[1]))
             department.id = row[0]
             cls.all[department.id] = department
         return department
@@ -104,10 +88,10 @@ class Department:
     
     def save(self):
         sql = """
-            INSERT INTO departments(name, par_id)
-            VALUES (?,?)
+            INSERT INTO departments(name)
+            VALUES (?)
         """    
-        CURSOR.execute(sql, (self.name, self.par_id))
+        CURSOR.execute(sql, (self.name,))
         CONN.commit()
         
         self.id = CURSOR.lastrowid
@@ -116,10 +100,10 @@ class Department:
     def update(self):
         sql = """
             UPDATE department
-            SET name=?, par_id=?
+            SET name=?
             WHERE id=?
             """
-        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql, (self.name, self.id))
         CONN.commit()
         
     def delete(self):
@@ -127,7 +111,7 @@ class Department:
             DELETE FROM department
             WHERE id=?
         """
-        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql, (self.name,self.id))
         CONN.commit()
         
         del type(self).all[self.id]
