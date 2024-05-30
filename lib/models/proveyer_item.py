@@ -145,7 +145,7 @@ class Proveyer_Item:
             proveyer_item.price = int(row[4])
             proveyer_item.case_size = int(row[5])
         else:
-            proveyer_item = cls(int(row[1]), str(row[2]), int(row[3]), int(row[4]), int(row[5]))
+            proveyer_item = cls(str(row[1]), int(row[2]), int(row[3]), int(row[4]), int(row[5]))
             proveyer_item.id = row[0]
             cls.all[proveyer_item.id] = proveyer_item
         return proveyer_item
@@ -188,3 +188,13 @@ class Proveyer_Item:
         """
         row = CURSOR.execute(sql, (item_id,)).fetchone()
         return cls.instance_from_db(row) if row else None
+
+    def load_related_proveyer(self):
+        from models.proveyer import Proveyer
+        sql = """
+            SELECT * 
+            FROM proveyers
+            WHERE id=?
+        """
+        row = CURSOR.execute(sql, (self.proveyer_id,)).fetchone()
+        self.proveyer=Proveyer.instance_from_db(row)

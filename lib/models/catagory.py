@@ -119,4 +119,14 @@ class Catagory:
         
         del type(self).all[self.id]
         self.id=None
+        
+    def load_related_items(self):
+        from models.item import Item
+        sql = """
+            SELECT * 
+            FROM items
+            WHERE catagory_id=?
+        """
+        rows = CURSOR.execute(sql, (self.id,)).fetchall()
+        self.items=[Item.instance_from_db(row) for row in rows]
        

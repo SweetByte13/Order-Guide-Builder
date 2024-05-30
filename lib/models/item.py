@@ -154,4 +154,33 @@ class Item:
         
         del type(self).all[self.id]
         self.id=None
+        
+    def load_related_catagories(self):
+        from models.catagory import Catagory
+        sql = """
+            SELECT * 
+            FROM catagories
+            WHERE id=?
+        """
+        row = CURSOR.execute(sql, (self.catagory_id,)).fetchone()
+        self.catagory=Catagory.instance_from_db(row)
+        
+    def load_related_par(self):
+        from models.par import Par
+        sql = """
+            SELECT * 
+            FROM pars
+            WHERE id=?
+        """
+        row = CURSOR.execute(sql, (self.par_id,)).fetchone()
+        self.par=Par.instance_from_db(row)
        
+    def load_related_proveyer_items(self):
+        from models.proveyer_item import Proveyer_Item
+        sql = """
+            SELECT * 
+            FROM proveyer_item
+            WHERE item_id=?
+        """
+        rows = CURSOR.execute(sql, (self.id,)).fetchall()
+        self.proveyer_items=[Proveyer_Item.instance_from_db(row) for row in rows]

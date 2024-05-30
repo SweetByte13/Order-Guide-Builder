@@ -11,10 +11,10 @@ from helpers import (
     create_new_proveyer,
     update_new_proveyer,
     delete_new_proveyer,
-    create_new_item,
-    update_new_item,
+    create_new_item_and_par,
+    update_item,
     delete_new_item,
-    create_new_par,
+    search_item_by_name,
     update_new_par,
     delete_new_par,
     create_new_catagory,
@@ -22,7 +22,10 @@ from helpers import (
     list_departments,
     create_new_department,
     update_new_department,
-    delete_new_department
+    delete_new_department,
+    get_full_order_guide,
+    get_order_guide_based_on_pars,
+    get_order_guide_items_stock_amounts
 )
 
 
@@ -40,6 +43,14 @@ def main():
             list_catagories()
         elif choice == "4":
             list_items_by_proveyer()
+        elif choice == "5":
+            get_full_order_guide()
+        elif choice == "6":
+            get_order_guide_based_on_pars()
+        elif choice == "7":
+            get_order_guide_items_stock_amounts()
+        elif choice == "8": 
+            search_item_by_name()
         elif choice == "9":   
             search_proveyer_by_id()
         elif choice == "10":
@@ -75,9 +86,9 @@ def manage_item_menu():
         if choice == "0":
             return
         elif choice == "1":
-            create_new_item() 
+            create_new_item_and_par() 
         elif choice == "2":
-            update_new_item()
+            update_item()
         elif choice == "3":
             delete_new_item()
 
@@ -88,7 +99,7 @@ def manage_par_menu():
         if choice == "0":
             return
         elif choice == "1":
-            create_new_par() 
+            create_new_item_and_par() 
         elif choice == "2":
             update_new_par()
         elif choice == "3":
@@ -130,8 +141,8 @@ def print_menu():
     print("3. List Catagories")
     print("4. List Items by proveyer")
     print("5. List full order guide")
-    print("6. List order guide based on items near or below par")
-    print("7. List guide of items current amounts stocked")
+    print("6. List order guide based on items near or below par amounts")
+    print("7. List all items current stock amounts")
     print("8. Search for item by name")
     print("9. Search for proveyer by id")
     print("10. Manage Proveyers")
