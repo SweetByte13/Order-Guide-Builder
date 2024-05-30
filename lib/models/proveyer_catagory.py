@@ -87,7 +87,7 @@ class Proveyer_Catagory:
     def save(self):
         sql = """
             INSERT INTO proveyer_catagories(proveyer_id, catagory_id)
-            VALUES (?,?,?)
+            VALUES (?,?)
         """    
         CURSOR.execute(sql, (self.proveyer_id, self.catagory_id))
         CONN.commit()

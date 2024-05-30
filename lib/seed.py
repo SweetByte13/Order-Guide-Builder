@@ -19,7 +19,6 @@ def seed_database():
     Proveyer_Catagory.drop_table()
     Catagory.drop_table()
     
-    
     Proveyer.create_table()
     Proveyer_Item.create_table()
     Par.create_table()
@@ -29,8 +28,6 @@ def seed_database():
     Proveyer_Catagory.create_table()
     Catagory.create_table()
 
-    # Create seed data
-  
     Proveyer.create('Baldor', 1900, 150)
     Proveyer.create("Dairyland", 1630, 200)
     Proveyer.create("LaFrieda", 2100, 180)
@@ -44,6 +41,20 @@ def seed_database():
     Proveyer_Item.create("Honey",1, 5, 18, 1)
     Proveyer_Item.create("Salmon",6, 4, 32, 2)
     
+    Catagory.create("Produce")
+    Catagory.create("Dairy")
+    Catagory.create("Meat")
+    Catagory.create("Dry Goods")
+    Catagory.create("Fish")
+    
+    Proveyer_Catagory.create(1, 1)  
+    Proveyer_Catagory.create(2, 1)
+    Proveyer_Catagory.create(2, 2)
+    Proveyer_Catagory.create(3, 3)
+    Proveyer_Catagory.create(4,5)
+    Proveyer_Catagory.create(6,4)
+    Proveyer_Catagory.create(1,4)
+     
     Par.create("Tomatoes", 12, 8)
     Par.create("Apples", 45, 8)
     Par.create("Butter", 8, 10)
@@ -69,13 +80,6 @@ def seed_database():
     Item.create("Tomatoes", 1, 1)
     Item.create("Butter", 3, 2)
     Item.create("Salmon", 6, 5)
-    
-    Catagory.create("Produce")
-    Catagory.create("Dairy")
-    Catagory.create("Meat")
-    Catagory.create("Dry Goods")
-    Catagory.create("Fish")
-    
     
 seed_database()
 print("Seeded database")
