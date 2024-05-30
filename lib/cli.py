@@ -7,6 +7,7 @@ from helpers import (
     list_items,
     list_catagories,
     list_items_by_proveyer,
+    search_proveyer_by_id,
     create_new_proveyer,
     update_new_proveyer,
     delete_new_proveyer,
@@ -18,7 +19,7 @@ from helpers import (
     delete_new_par,
     create_new_catagory,
     update_new_catagory,
-    delete_new_catagory,
+    list_departments,
     create_new_department,
     update_new_department,
     delete_new_department
@@ -39,6 +40,8 @@ def main():
             list_catagories()
         elif choice == "4":
             list_items_by_proveyer()
+        elif choice == "9":   
+            search_proveyer_by_id()
         elif choice == "10":
             manage_proveyer_menu()
         elif choice == "11":
@@ -101,8 +104,6 @@ def manage_catagory_menu():
             create_new_catagory() 
         elif choice == "2":
             update_new_catagory()
-        elif choice == "3":
-            delete_new_catagory()
         
 def manage_department_menu():
     while True:
@@ -111,10 +112,12 @@ def manage_department_menu():
         if choice == "0":
             return
         elif choice == "1":
-            create_new_department() 
+            list_departments()
         elif choice == "2":
-            update_new_department()
+            create_new_department() 
         elif choice == "3":
+            update_new_department()
+        elif choice == "4":
             delete_new_department()
                 
 
@@ -130,7 +133,7 @@ def print_menu():
     print("6. List order guide based on items near or below par")
     print("7. List guide of items current amounts stocked")
     print("8. Search for item by name")
-    print("9. Search for department by id")
+    print("9. Search for proveyer by id")
     print("10. Manage Proveyers")
     print("11. Manage Items")
     print("12. Manage Pars")
@@ -171,16 +174,16 @@ def print_manage_catagory_menu():
     print("0. Return to previous menu")
     print("1. Create catagory")
     print("2. Edit catagory")
-    print("3. Delete catagory")
     print("-------------------------------")
     
 def print_manage_department_menu():
     print("-------------------------------")
     print("Please select an option:")
     print("0. Return to previous menu")
-    print("1. Create department")
-    print("2. Edit department")
-    print("3. Delete department")
+    print("1. List departments")
+    print("2. Create department")
+    print("3. Edit department")
+    print("4. Delete department")
     print("-------------------------------")
 
 if __name__ == "__main__":

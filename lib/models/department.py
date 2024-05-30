@@ -19,7 +19,7 @@ class Department:
         if isinstance (new_name, str):
             self._name = new_name
         else:
-            raise TypeError(f'{new_name} is not a string.')
+            raise TypeError(f'{new_name} is not valid.')
  
     @classmethod
     def create_table(cls):
@@ -99,7 +99,7 @@ class Department:
         
     def update(self):
         sql = """
-            UPDATE department
+            UPDATE departments
             SET name=?
             WHERE id=?
             """
@@ -107,11 +107,16 @@ class Department:
         CONN.commit()
         
     def delete(self):
-        sql = """
-            DELETE FROM department
+        sql_DP_delete = """
+            DELETE FROM par_departments
             WHERE id=?
         """
-        CURSOR.execute(sql, (self.name,self.id))
+        sql = """
+            DELETE FROM departments
+            WHERE id=?
+        """
+        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql_DP_delete, (self.id,))
         CONN.commit()
         
         del type(self).all[self.id]

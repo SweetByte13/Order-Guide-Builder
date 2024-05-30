@@ -21,7 +21,7 @@ class Catagory:
         if isinstance (new_name, str):
             self._name = new_name
         else:
-            raise TypeError(f'{new_name} is not a string.')
+            raise TypeError(f'{new_name} is not valid.')
 
  
     @classmethod
@@ -106,7 +106,7 @@ class Catagory:
             SET name=?
             WHERE id=?
             """
-        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql, (self.name, self.id,))
         CONN.commit()
         
     def delete(self):

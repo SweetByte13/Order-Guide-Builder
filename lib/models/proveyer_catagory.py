@@ -10,7 +10,7 @@ class Proveyer_Catagory:
         self.catagory = None
         
     def __repr__(self):
-        return f"<Par {self.id}:{self.proveyer_id}, {self.catagory_id}>"
+        return f"<Proveyer Catagory {self.id}:{self.proveyer_id}, {self.catagory_id}>"
     
     @property
     def proveyer_id(self):
@@ -21,7 +21,7 @@ class Proveyer_Catagory:
         if isinstance (new_proveyer_id, int):
             self._proveyer_id = new_proveyer_id
         else:
-            raise TypeError(f'{new_proveyer_id} is not a integer, must have a proveyer ID')
+            raise TypeError(f'{new_proveyer_id} is not a valid ID, must have a proveyer ID')
         
     @property
     def catagory_id(self):
@@ -32,7 +32,7 @@ class Proveyer_Catagory:
         if isinstance (new_catagory_id, int):
             self._catagory_id = new_catagory_id
         else:
-            raise TypeError(f'{new_catagory_id} is not a integer, must have a catagory ID')    
+            raise TypeError(f'{new_catagory_id} is not a valid ID, must have a catagory ID')    
 
     @classmethod
     def create_table(cls):

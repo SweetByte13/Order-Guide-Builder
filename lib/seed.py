@@ -31,11 +31,11 @@ def seed_database():
 
     # Create seed data
   
-    Proveyer.create('Baldor', 'Produce', 1900, 150)
-    Proveyer.create("Dairyland", 'Dairy', 1630, 200)
-    Proveyer.create("LaFrieda", 'Meat', 2100, 180)
-    Proveyer.create("Congressional", "Fish", 2100, 150)
-    Proveyer.create("Sysco", "Dry Goods", 1600, 100)
+    Proveyer.create('Baldor', 1900, 150)
+    Proveyer.create("Dairyland", 1630, 200)
+    Proveyer.create("LaFrieda", 2100, 180)
+    Proveyer.create("Congressional", 2100, 150)
+    Proveyer.create("Sysco", 1600, 100)
     
     Proveyer_Item.create("Tomatoes",4, 1, 10, 4)
     Proveyer_Item.create("Apples",3,  1, 23, 50)

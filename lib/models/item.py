@@ -21,10 +21,10 @@ class Item:
     
     @name.setter
     def name(self, new_name):
-        if isinstance (new_name, str) and not hasattr(self, 'name'):
+        if isinstance (new_name, str):
             self._name = new_name
         else:
-            raise TypeError(f'{new_name} is not a string, Item must have a name')
+            raise TypeError(f'{new_name} is not valid, Item must have a name')
         
     @property
     def par_id(self):
@@ -32,10 +32,10 @@ class Item:
     
     @par_id.setter
     def par_id(self, new_par_id):
-        if isinstance (new_par_id, int) and not hasattr(self, 'par_id'):
+        if isinstance (new_par_id, int):
             self._par_id = new_par_id
         else:
-            raise TypeError(f'{new_par_id} is not a integer, Items must have a par ID')
+            raise TypeError(f'{new_par_id} is not a valid par ID, Items must have a par ID')
         
     @property
     def catagory_id(self):
@@ -43,10 +43,10 @@ class Item:
     
     @catagory_id.setter
     def catagory_id(self, new_catagory_id):
-        if isinstance (new_catagory_id, int) and not hasattr(self, 'catagory_id'):
+        if isinstance (new_catagory_id, int):
             self._catagory_id = new_catagory_id
         else:
-            raise TypeError(f'{new_catagory_id} is not a integer, Items must have a catagory ID')    
+            raise TypeError(f'{new_catagory_id} is not a valid catagory ID, Items must have a catagory ID')    
 
     @classmethod
     def create_table(cls):
@@ -65,7 +65,7 @@ class Item:
         
     @classmethod
     def create(cls, name, par_id, catagory_id):
-        item = cls(name, par_id, catagory_id)
+        item = cls(str(name), int(par_id), int(catagory_id))
         item.save()
         return item
     
@@ -81,6 +81,7 @@ class Item:
     def instance_from_db(cls, row):
         item = cls.all.get(row[0])
         if item:
+            item.name = str(row[1])
             item.par_id = int(row[2])
             item.catagory_id = int(row [3])
         else:
@@ -139,10 +140,15 @@ class Item:
         CONN.commit()
         
     def delete(self):
+        sql_P_delete = """
+            DELETE FROM proveyer_item
+            WHERE item_id = ?
+        """
         sql = """
             DELETE FROM items
             WHERE id=?
         """
+        CURSOR.execute(sql_P_delete, (self.id,))
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
         

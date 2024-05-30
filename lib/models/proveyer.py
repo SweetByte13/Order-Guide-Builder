@@ -3,16 +3,15 @@ from models.__init__ import CURSOR, CONN
 class Proveyer:
     all = {}
     
-    def __init__(self, name, catagory, cut_off_time, order_min):
+    def __init__(self, name, cut_off_time, order_min):
         self.name = name
-        self.catagory = catagory
         self.cut_off_time = cut_off_time
         self.order_min = order_min
         self.proveyer_catagories = []
         self.proveyer_items = []
         
     def __repr__(self):
-        return f"<Proveyer {self.id}: {self.name}, {self.catagory}, {self.cut_off_time}, {self.order_min}>"
+        return f"<Proveyer {self.id}: {self.name}, {self.cut_off_time}, {self.order_min}>"
     
     @property
     def name(self):
@@ -20,21 +19,10 @@ class Proveyer:
     
     @name.setter
     def name(self, new_name):
-        if isinstance (new_name, str) and not hasattr(self, 'name'):
+        if isinstance (new_name, str):
             self._name = new_name
         else:
-            raise TypeError(f'{new_name} is not a string, Proveyers must have a name')
-        
-    @property
-    def catagory(self):
-        return self._catagory
-    
-    @catagory.setter
-    def catagory(self, new_catagory):
-        if isinstance (new_catagory, str) and not hasattr(self, 'catagory'):
-            self._catagory = new_catagory
-        else:
-            raise TypeError(f'{new_catagory} is not a string, Proveyers must have a catagory')
+            raise TypeError(f'{new_name} is not valid, Proveyers must have a name.')
         
     @property
     def cut_off_time(self):
@@ -45,7 +33,7 @@ class Proveyer:
         if isinstance (new_cut_off_time, int):
             self._cut_off_time = new_cut_off_time
         else:
-            raise TypeError(f'{new_cut_off_time} is not a integer, Proveyers must have a cut off time')
+            raise TypeError(f'{new_cut_off_time} is not valid, Proveyers must have a cut off time.')
         
     @property
     def order_min(self):
@@ -56,7 +44,7 @@ class Proveyer:
         if isinstance (new_order_min, int):
             self._order_min = new_order_min
         else:
-            raise TypeError(f'{new_order_min} is not a integer, Proveyers must have a order minimum')    
+            raise TypeError(f'{new_order_min} is not valid, Proveyers must have a order minimum.')    
 
     @classmethod
     def create_table(cls):
@@ -64,7 +52,6 @@ class Proveyer:
             CREATE TABLE IF NOT EXISTS proveyers (
             id INTEGER PRIMARY KEY,
             name TEXT,
-            catagory TEXT,
             cut_off_time INTEGER,
             order_min INTEGER
             )
@@ -73,8 +60,8 @@ class Proveyer:
         CONN.commit()
         
     @classmethod
-    def create(cls, name, catagory, cut_off_time, order_min):
-        proveyer = cls(str(name), str(catagory), int(cut_off_time), int(order_min))
+    def create(cls, name, cut_off_time, order_min):
+        proveyer = cls(str(name), int(cut_off_time), int(order_min))
         proveyer.save()
         return proveyer
     
@@ -90,10 +77,11 @@ class Proveyer:
     def instance_from_db(cls, row):
         proveyer = cls.all.get(row[0])
         if proveyer:
-            proveyer.cut_off_time = row[3]
-            proveyer.order_min = row[4]
+            proveyer.name = str(row[1])
+            proveyer.cut_off_time = int(row[2])
+            proveyer.order_min = int(row[3])
         else:
-            proveyer = cls(str(row[1]), str(row[2]), int(row[3]), int(row[4]))
+            proveyer = cls(str(row[1]), int(row[2]), int(row[3]))
             proveyer.id = row[0]
             cls.all[proveyer.id] = proveyer
         return proveyer
@@ -129,10 +117,10 @@ class Proveyer:
     
     def save(self):
         sql = """
-            INSERT INTO proveyers(name, catagory, cut_off_time, order_min)
-            VALUES (?,?,?,?)
+            INSERT INTO proveyers(name, cut_off_time, order_min)
+            VALUES (?,?,?)
         """    
-        CURSOR.execute(sql, (self.name, self.catagory, self.cut_off_time, self.order_min))
+        CURSOR.execute(sql, (self.name, self.cut_off_time, self.order_min))
         CONN.commit()
         
         self.id = CURSOR.lastrowid
@@ -141,18 +129,28 @@ class Proveyer:
     def update(self):
         sql = """
             UPDATE proveyers
-            SET cut_off_time=?, order_min=?
+            SET name=?, cut_off_time=?, order_min=?
             WHERE id=?
             """
-        CURSOR.execute(sql, (self.cut_off_time, self.order_min, self.id))
+        CURSOR.execute(sql, (self.name, self.cut_off_time, self.order_min, self.id))
         CONN.commit()
         
     def delete(self):
-        sql = """
+        sql_PI_delete = """
+            DELETE FROM proveyer_item
+            WHERE proveyer_id = ?
+        """
+        sql_PC_delete = """
+            DELETE FROM proveyer_catagories
+            WHERE proveyer_id = ?
+        """
+        sql_P_delete = """
             DELETE FROM proveyers
             WHERE id=?
         """
-        CURSOR.execute(sql, (self.id,))
+        CURSOR.execute(sql_PI_delete, (self.id,))
+        CURSOR.execute(sql_PC_delete, (self.id,))
+        CURSOR.execute(sql_P_delete, (self.id,))
         CONN.commit()
         
         del type(self).all[self.id]

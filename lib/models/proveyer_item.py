@@ -15,7 +15,7 @@ class Proveyer_Item:
         self.proveyer = None
         
     def __repr__(self):
-        return f"<Proveyer item {self.id}: {self.name}, {self.item_id}, {self.proveyer_id}, {self.price}, {self.case_size}>"
+        return f"<Proveyer Item {self.id}: {self.name}, {self.item_id}, {self.proveyer_id}, {self.price}, {self.case_size}>"
     
     @property
     def name(self):
@@ -23,10 +23,10 @@ class Proveyer_Item:
     
     @name.setter
     def name(self, name):
-        if  isinstance (name, str) and not hasattr(self, 'new_name'):
+        if  isinstance (name, str):
             self._name = name
         else:
-            raise TypeError(f'{name} is not a string.')
+            raise TypeError(f'{name} is not valid, Proveyer_Item must have a name.')
     
     @property
     def item_id(self):
@@ -37,7 +37,7 @@ class Proveyer_Item:
         if  isinstance (new_item_id, int):
             self._item_id = new_item_id
         else:
-            raise TypeError(f'{new_item_id} is not a integer, Proveyer_Item must have a item ID')
+            raise TypeError(f'{new_item_id} is not a valid item ID, Proveyer_Item must have a item ID.')
             
     @property
     def proveyer_id(self):
@@ -48,7 +48,7 @@ class Proveyer_Item:
         if  isinstance (proveyer_id, int) and Proveyer.find_by_id(proveyer_id):
             self._proveyer_id = proveyer_id
         else:
-            raise TypeError(f'{proveyer_id} is not a integer, Proveyer_Item must have a proveyer ID')
+            raise TypeError(f'{proveyer_id} is not a valid proveyer ID, Proveyer_Item must have a proveyer ID.')
         
     @property
     def price(self):
@@ -59,7 +59,7 @@ class Proveyer_Item:
         if  isinstance (new_price, int):
             self._price= new_price
         else:
-            raise TypeError(f'{new_price} is not a integer, Proveyer_Item must have a price')
+            raise TypeError(f'{new_price} is not valid, Proveyer_Item must have a price.')
         
     @property
     def case_size(self):
@@ -70,7 +70,7 @@ class Proveyer_Item:
         if  isinstance (new_case_size, int):
             self._case_size= new_case_size
         else:
-            raise TypeError(f'{new_case_size} is not a integer, Proveyer_Item must have a case size')
+            raise TypeError(f'{new_case_size} is not valid, Proveyer_Item must have a case size.')
     
     @classmethod
     def create_table(cls):
@@ -138,14 +138,14 @@ class Proveyer_Item:
     def instance_from_db(cls, row):
         proveyer_item = cls.all.get(row[0])
         if proveyer_item:
-            proveyer_item.id=row[0]
-            proveyer_item.name=row[1]
-            proveyer_item.item_id = row[2]
-            proveyer_item.proveyer_id = row[3]
-            proveyer_item.price = row[4]
-            proveyer_item.case_size = row[5]
+            proveyer_item.id=int(row[0])
+            proveyer_item.name=str(row[1])
+            proveyer_item.item_id = int(row[2])
+            proveyer_item.proveyer_id = int(row[3])
+            proveyer_item.price = int(row[4])
+            proveyer_item.case_size = int(row[5])
         else:
-            proveyer_item = cls(row[1], row[2], row[3], row[4], row[5])
+            proveyer_item = cls(int(row[1]), str(row[2]), int(row[3]), int(row[4]), int(row[5]))
             proveyer_item.id = row[0]
             cls.all[proveyer_item.id] = proveyer_item
         return proveyer_item

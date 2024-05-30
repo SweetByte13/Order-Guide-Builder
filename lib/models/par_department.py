@@ -21,7 +21,7 @@ class Par_Department:
         if isinstance (new_par_id, int):
             self._par_id = new_par_id
         else:
-            raise TypeError(f'{new_par_id} is not a integer, Par-Department must have a par ID')
+            raise TypeError(f'{new_par_id} is not a valid par ID, Par-Department must have a par ID')
         
     @property
     def department_id(self):
@@ -32,7 +32,7 @@ class Par_Department:
         if isinstance (new_department_id, int):
             self._department_id = new_department_id
         else:
-            raise TypeError(f'{new_department_id} is not a integer,  Par-Department must have a department ID')    
+            raise TypeError(f'{new_department_id} is not a valid department ID,  Par-Department must have a department ID')    
 
     @classmethod
     def create_table(cls):
@@ -66,11 +66,11 @@ class Par_Department:
     def instance_from_db(cls, row):
         par_department = cls.all.get(row[0])
         if par_department:
-            par_department.par_id = row[1]
-            par_department.department_id = row[2]
+            par_department.par_id = int(row[1])
+            par_department.department_id = int(row[2])
             
         else:
-            par_department = cls(str(row[1]), row[2])
+            par_department = cls(int(row[1]), int(row[2]))
             par_department.id = row[0]
             cls.all[par_department.id] = par_department
         return par_department

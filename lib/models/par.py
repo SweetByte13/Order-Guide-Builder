@@ -13,7 +13,7 @@ class Par:
 
         
     def __repr__(self):
-        return f"<Item {self.id}: {self.name}, {self.par_amount}, {self.stock}>"
+        return f"<Par {self.id}: {self.name}, {self.par_amount}, {self.stock}>"
     
     @property
     def name(self):
@@ -24,7 +24,7 @@ class Par:
         if isinstance (new_name, str):
             self._name = new_name
         else:
-            raise TypeError(f'{new_name} is not a string, Par must have a name')
+            raise TypeError(f'{new_name} is not valid, Par must have a name')
         
     @property
     def par_amount(self):
@@ -35,7 +35,7 @@ class Par:
         if isinstance (new_par_amount, int):
             self._par_amount = new_par_amount
         else:
-            raise TypeError(f'{new_par_amount} is not a integer, Par must have a par amount')    
+            raise TypeError(f'{new_par_amount} is not a valid, Par must have a par amount')    
 
     @property
     def stock(self):
@@ -46,7 +46,7 @@ class Par:
         if isinstance (new_stock, int):
             self._stock = new_stock
         else:
-            raise TypeError(f'{new_stock} is not a integer, Par must have a stock amount')
+            raise TypeError(f'{new_stock} is not valid, Par must have a stock amount')
 
     @classmethod
     def create_table(cls):
@@ -139,10 +139,20 @@ class Par:
         CONN.commit()
         
     def delete(self):
+        sql_PD_delete = """
+            DELETE FROM par_departments
+            WHERE id=?
+        """
+        sql_I_delete = """
+            DELETE FROM items
+            WHERE id=?
+        """
         sql = """
             DELETE FROM pars
             WHERE id=?
         """
+        CURSOR.execute(sql_PD_delete, (self.id,))
+        CURSOR.execute(sql_I_delete, (self.id,))
         CURSOR.execute(sql, (self.id,))
         CONN.commit()
         
