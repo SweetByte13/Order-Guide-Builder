@@ -8,7 +8,7 @@ class Department:
         self.department_pars = []
     
     def __repr__(self):
-        return f"<Department {self.id}: {self.name}>"
+        return f"Department {self.id}: {self.name}"
     
     @property
     def name(self):

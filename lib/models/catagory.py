@@ -10,7 +10,7 @@ class Catagory:
         self.proveyer_catagories = []
         
     def __repr__(self):
-        return f"<Catagory {self.id}: {self.name}>"
+        return f"Catagory {self.id}: {self.name}"
     
     @property
     def name(self):

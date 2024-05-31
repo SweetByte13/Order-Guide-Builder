@@ -15,7 +15,7 @@ class Proveyer_Item:
         self.proveyer = None
         
     def __repr__(self):
-        return f"<Proveyer Item {self.id}: {self.name}, {self.item_id}, {self.proveyer_id}, {self.price}, {self.case_size}>"
+        return f"Proveyer Item {self.id}: {self.name}, {self.item_id}, {self.proveyer_id}, {self.price}, {self.case_size}"
     
     @property
     def name(self):

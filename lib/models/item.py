@@ -13,7 +13,7 @@ class Item:
         self.par = None
         
     def __repr__(self):
-        return f"<Item {self.id}: {self.name}, {self.par_id}, {self.catagory_id}>"
+        return f"Item {self.id}: {self.name}, {self.par_id}, {self.catagory_id}"
     
     @property
     def name(self):

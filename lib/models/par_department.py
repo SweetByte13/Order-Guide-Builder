@@ -10,7 +10,7 @@ class Par_Department:
         self.department = None
         
     def __repr__(self):
-        return f"<Par {self.id}:{self.par_id}, {self.department_id}>"
+        return f"Par-Department {self.id}:{self.par_id}, {self.department_id}"
 
     @property
     def par_id(self):

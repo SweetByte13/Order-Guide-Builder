@@ -13,7 +13,7 @@ class Par:
 
         
     def __repr__(self):
-        return f"<Par {self.id}: {self.name}, {self.par_amount}, {self.stock}>"
+        return f"Par {self.id}: {self.name}, {self.par_amount}, {self.stock}"
     
     @property
     def name(self):

@@ -12,7 +12,7 @@ class Proveyer:
         self.proveyer_items = []
         
     def __repr__(self):
-        return f"<Proveyer {self.id}: {self.name}, {self.cut_off_time}, {self.order_min}>"
+        return f"Proveyer {self.id}: {self.name}, {self.cut_off_time}, {self.order_min}"
     
     @property
     def name(self):

@@ -12,7 +12,6 @@ def exit_program():
 def list_proveyers():
     proveyers = Proveyer.get_all()
     for proveyer in proveyers:
-        proveyer_header()
         print(proveyer)
 
 def list_items():

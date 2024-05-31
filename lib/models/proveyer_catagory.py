@@ -10,7 +10,7 @@ class Proveyer_Catagory:
         self.catagory = None
         
     def __repr__(self):
-        return f"<Proveyer Catagory {self.id}:{self.proveyer_id}, {self.catagory_id}>"
+        return f"Proveyer-Catagory {self.id}:{self.proveyer_id}, {self.catagory_id}"
     
     @property
     def proveyer_id(self):
