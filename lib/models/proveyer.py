@@ -1,5 +1,6 @@
 from models.__init__ import CURSOR, CONN
 
+
 class Proveyer:
     all = {}
     
@@ -72,7 +73,8 @@ class Proveyer:
         """
         CURSOR.execute(sql)
         CONN.commit()
-    
+        
+        
     @classmethod
     def instance_from_db(cls, row):
         proveyer = cls.all.get(row[0])
@@ -156,20 +158,19 @@ class Proveyer:
         del type(self).all[self.id]
         self.id=None
         
-    def get_items(self):
-        # from models.proveyer_item import Proveyer_Item
+    def load_related_proveyer_items(self):
+        from models.proveyer_item import Proveyer_Item
         sql = """
-            SELECT * FROM proveyer_item pi JOIN
-            items i ON pi.item_id = i.id
-            WHERE pi.proveyer_id=?
+            SELECT * 
+            FROM proveyer_item
+            WHERE proveyer_id=?
         """
         rows = CURSOR.execute(sql, (self.id,)).fetchall()
-        # [id , name, item_id, proveyer_id, price, case_size  # id, name, par_id, catagory_id]
-        items=[]
-        for row in rows:
-            items.append({(row[1], row[2], row[3], row[4], row[5], row[8], row[9])})
-        return (items)
+        self.proveyer_items=[Proveyer_Item.instance_from_db(row) for row in rows]
             
+    def print_proveyer(self):
+        from helpers import format_spacing_for_print
+        print(f'|{format_spacing_for_print(self.name)}|{format_spacing_for_print(self.cut_off_time)}|{format_spacing_for_print(self.order_min)}|')
             
             
             

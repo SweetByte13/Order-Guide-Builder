@@ -184,3 +184,8 @@ class Item:
         """
         rows = CURSOR.execute(sql, (self.id,)).fetchall()
         self.proveyer_items=[Proveyer_Item.instance_from_db(row) for row in rows]
+        
+    @classmethod   
+    def print_item(cls, item):
+        from helpers import format_spacing_for_print
+        print(f'|{format_spacing_for_print(item.name)}|{format_spacing_for_print(item.par.stock)}|{format_spacing_for_print(item.par.par_amount)}|')

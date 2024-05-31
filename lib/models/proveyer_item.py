@@ -190,7 +190,6 @@ class Proveyer_Item:
         return cls.instance_from_db(row) if row else None
 
     def load_related_proveyer(self):
-        from models.proveyer import Proveyer
         sql = """
             SELECT * 
             FROM proveyers
@@ -198,3 +197,12 @@ class Proveyer_Item:
         """
         row = CURSOR.execute(sql, (self.proveyer_id,)).fetchone()
         self.proveyer=Proveyer.instance_from_db(row)
+        
+    def load_related_item(self):
+        sql = """
+            SELECT * 
+            FROM items
+            WHERE id=?
+        """
+        row = CURSOR.execute(sql, (self.item_id,)).fetchone()
+        self.item=Item.instance_from_db(row)

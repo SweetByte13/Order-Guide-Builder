@@ -12,6 +12,7 @@ def exit_program():
 def list_proveyers():
     proveyers = Proveyer.get_all()
     for proveyer in proveyers:
+        proveyer_header()
         print(proveyer)
 
 def list_items():
@@ -28,17 +29,22 @@ def list_items_by_proveyer():
     print(f'{Proveyer.get_all()}')
     id_ = input("Enter the proveyer's ID: ")
     if proveyer := Proveyer.find_by_id(id_):
-        items = proveyer.get_items()
-        if len(items) <= 0:
+        proveyer.load_related_proveyer_items()
+        if len(proveyer.proveyer_items) <= 0:
             print('Proveyer has no items')
             return
-        print(items)
+        item_header()
+        for pi in proveyer.proveyer_items:
+            pi.load_related_item()
+            pi.item.load_related_par()
+            Item.print_item(pi.item)
     else: print(f'Proveyer ID not found')
     
 def search_proveyer_by_id():
     id_ = input("Enter the proveyer's ID: ")
     if proveyer := Proveyer.find_by_id(id_):
-        print(proveyer)
+        proveyer_header()
+        proveyer.print_proveyer()
     else: print(f'Proveyer not found')
     
 def create_new_proveyer():
@@ -296,3 +302,11 @@ def format_spacing_for_print(word):
         return (f'{new_word}\t')
     else:
         return new_word
+    
+def proveyer_header():
+    print(f'|Proveyer\t|Cut off Time\t|Order Minimum\t\t|')
+    print(f'|---------------|---------------|---------------|')
+    
+def item_header():
+    print(f'|Item\t\t|Stock\t\t|Par\t\t|')
+    print(f'|---------------|---------------|---------------|')
